@@ -1,26 +1,86 @@
 [
   {
-    "id": "ls_000_smoke",
+    "id": "ls_001_en",
     "description": {
-      "purpose": "Placeholder smoke task (Stage 1.3): verified borrower makes a one-time payment today. Replaced by the real task set in Stage 2.1.",
-      "relevant_policies": "Verification; Confirmation; Payments; Reference numbers",
-      "notes": null
+      "purpose": "Verified borrower asks which payment was returned; agent gives its reference.",
+      "relevant_policies": "V1, G2",
+      "notes": "Category: Information. Planted case: returned_payment. Expected outcome: No change; the agent gives the returned payment's reference PM-31839."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You received a late fee notice and you think a payment of yours bounced. You want the reference number of the payment that was returned.",
+        "known_info": "You are Lina Girard.\nYour date of birth is 1964-09-21.\nYour postal code is G2Y 1L4.",
+        "unknown_info": null,
+        "task_instructions": "Ask for the reference number of the returned payment. You do not want to make a payment or any other change today. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [
+        "PM-31839"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_002_en",
+    "description": {
+      "purpose": "Verified borrower asks for the reference of their scheduled payment.",
+      "relevant_policies": "V1, G2",
+      "notes": "Category: Information. Planted case: scheduled_payment. Expected outcome: No change; the agent confirms scheduled payment PM-31886."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You set up a future payment on your personal loan some time ago and want to confirm it is still scheduled, and get its reference number.",
+        "known_info": "You are Karine Thompson.\nYour date of birth is 1980-06-06.\nYour postal code is H5P 6R3.",
+        "unknown_info": null,
+        "task_instructions": "Ask whether you have a scheduled payment and for its reference number. Do not cancel or change it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [
+        "PM-31886"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_003_en",
+    "description": {
+      "purpose": "Verified borrower makes a one-time payment today.",
+      "relevant_policies": "V1, G1, G2, P1, P3",
+      "notes": "Category: Payments. Planted case: due_later. Expected outcome: Payment of 150.00 posted today; reference PM-31887 given."
     },
     "user_scenario": {
       "persona": null,
       "instructions": {
         "domain": "loan_servicing",
         "reason_for_call": "You want to make a one-time payment of $150 on your personal loan today, from your bank account at Banque Fleuve.",
-        "known_info": "You are \u00c9milie Bouchard.\nYour date of birth is 2000-09-22.\nYour postal code is J2V 3E7.\nYour email is emilie.bouchard13@example.com.",
-        "unknown_info": "You do not know your loan id or your borrower id.",
-        "task_instructions": "Only give your details when the agent asks for them. Confirm the payment when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once the payment is done."
+        "known_info": "You are \u00c9milie Bouchard.\nYour date of birth is 2000-09-22.\nYour postal code is J2V 3E7.",
+        "unknown_info": null,
+        "task_instructions": "Confirm the payment when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
       }
     },
     "initial_state": null,
     "evaluation_criteria": {
       "actions": [
         {
-          "action_id": "ls_000_smoke_0",
+          "action_id": "ls_003_en_0",
           "name": "make_payment",
           "arguments": {
             "loan_id": "LN-20004",
@@ -37,6 +97,1324 @@
       "reward_basis": [
         "DB",
         "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_004_en",
+    "description": {
+      "purpose": "Verified borrower cancels a scheduled payment.",
+      "relevant_policies": "V1, G1, P5",
+      "notes": "Category: Payments. Planted case: scheduled_payment. Expected outcome: Scheduled payment PM-31886 cancelled."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You scheduled a $500 payment on your personal loan for 2026-03-25, but you need that money for something else. You want to cancel it.",
+        "known_info": "You are Karine Thompson.\nYour date of birth is 1980-06-06.\nYour postal code is H5P 6R3.",
+        "unknown_info": null,
+        "task_instructions": "Confirm the cancellation when the agent states the details. You do not want to schedule a different payment. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_004_en_0",
+          "name": "cancel_scheduled_payment",
+          "arguments": {
+            "payment_id": "PM-31886"
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_005_en",
+    "description": {
+      "purpose": "Borrower asks to pay more than the payoff; agent must cap it at the payoff amount (today) and the loan becomes paid off.",
+      "relevant_policies": "V1, G1, G2, P1",
+      "notes": "Category: Payments. Planted case: due_change_old. Expected outcome: Payment of exactly the payoff (3572.98) posted; loan paid off."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to pay $4000 today to close your personal loan LN-20002 completely, from your Northgate Bank account.",
+        "known_info": "You are Liam Nguyen.\nYour date of birth is 1968-07-09.\nYour postal code is N8C 5C8.\nYour personal loan number is LN-20002.",
+        "unknown_info": null,
+        "task_instructions": "If the agent says $4000 is more than you owe, agree to pay exactly the amount needed to pay off the loan today instead. Confirm when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_005_en_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20002",
+            "amount": 3572.98,
+            "method_id": "BA-40002",
+            "payment_date": "2026-03-16"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_006_en",
+    "description": {
+      "purpose": "Borrower asks for a payment date beyond 30 days; agent must refuse the date and use an allowed one.",
+      "relevant_policies": "V1, G1, G2, P2",
+      "notes": "Category: Payments. Planted case: young_loan. Expected outcome: Payment scheduled for 2026-04-15 (the latest allowed date)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to schedule a $250 payment on your personal loan LN-20005 for 2026-04-20, from your Northgate Bank account.",
+        "known_info": "You are Mei Martin.\nYour date of birth is 1980-07-07.\nYour postal code is K0G 9T8.\nYour personal loan number is LN-20005.",
+        "unknown_info": null,
+        "task_instructions": "If the agent says 2026-04-20 is too far ahead, ask for the latest date that is allowed and schedule the payment for that date. Confirm when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_006_en_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20005",
+            "amount": 250.0,
+            "method_id": "BA-40005",
+            "payment_date": "2026-04-15"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_007_en",
+    "description": {
+      "purpose": "Borrower wants to pay by credit card; agent must refuse and not transfer.",
+      "relevant_policies": "V1, P3",
+      "notes": "Category: Payments. Planted case: fee_65_open. Expected outcome: No payment and no transfer; the agent refers to the online portal."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to make a $500 payment on your auto loan today with your Visa credit card.",
+        "known_info": "You are Nadia Martin.\nYour date of birth is 2000-11-01.\nYour postal code is L8G 2H6.",
+        "unknown_info": null,
+        "task_instructions": "You only want to pay by credit card. If the agent says credit cards are not accepted, do not use your bank account; say you will check the online portal. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_008_en",
+    "description": {
+      "purpose": "Co-borrower makes a payment on the shared loan from her own account.",
+      "relevant_policies": "V1, A1, G1, G2, P3",
+      "notes": "Category: Payments. Planted case: co_borrowed. Expected outcome: Co-borrower's payment of 200.00 posted from her own account."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are a co-borrower on an auto loan (LN-20020) with Lucas Simard. You want to pay $200 on it today from your own Banque Fleuve account.",
+        "known_info": "You are H\u00e9l\u00e8ne Singh.\nYour date of birth is 1957-11-06.\nYour postal code is G8L 2E0.\nThe shared auto loan number is LN-20020.",
+        "unknown_info": null,
+        "task_instructions": "Confirm when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_008_en_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20020",
+            "amount": 200.0,
+            "method_id": "BA-40022",
+            "payment_date": "2026-03-16"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_009_en",
+    "description": {
+      "purpose": "Borrower changes the amount before confirming; the final amount counts.",
+      "relevant_policies": "V1, G1, G2",
+      "notes": "Category: Payments. Planted case: hardship_old. Expected outcome: One payment of 250.00 (not 300.00)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to make a payment on your auto loan LN-20008 today from your \u00c9rable Bank account. You first ask to pay $300.",
+        "known_info": "You are Hugo Thompson.\nYour date of birth is 1999-12-05.\nYour postal code is H9X 4C6.\nYour auto loan number is LN-20008.",
+        "unknown_info": null,
+        "task_instructions": "When the agent states the details for $300 and asks you to confirm, say you changed your mind and want to pay $250 instead. Confirm the $250 payment. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_009_en_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20008",
+            "amount": 250.0,
+            "method_id": "BA-40008",
+            "payment_date": "2026-03-16"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_010_en",
+    "description": {
+      "purpose": "Payoff quote for 7 days ahead, then a scheduled payment of exactly that amount.",
+      "relevant_policies": "V1, Q1, G1, G2",
+      "notes": "Category: Payoff. Planted case: co_borrower_1_other. Expected outcome: Payment of the 2026-03-23 payoff amount (1397.19) scheduled."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to pay off your personal loan LN-20021 on 2026-03-23 from your Northgate Bank account.",
+        "known_info": "You are Lucas Simard.\nYour date of birth is 1976-04-12.\nYour postal code is J9M 3H6.\nYour personal loan number is LN-20021.",
+        "unknown_info": null,
+        "task_instructions": "Ask how much you need to pay to close the loan on 2026-03-23, then ask to schedule a payment of exactly that amount for that date. Confirm when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_010_en_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20021",
+            "amount": 1397.19,
+            "method_id": "BA-40020",
+            "payment_date": "2026-03-23"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_011_en",
+    "description": {
+      "purpose": "Payoff quote for 20 days ahead must be refused; the payoff letter (always quoted 10 days ahead) is allowed.",
+      "relevant_policies": "V1, Q1, C1, G2",
+      "notes": "Category: Payoff. Planted case: six_month_loan. Expected outcome: No quote for 2026-04-05; payoff letter sent (DR-60001)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are selling your car and want to know the payoff amount of your personal loan LN-20006 for 2026-04-05.",
+        "known_info": "You are Liam Haddad.\nYour date of birth is 1990-11-02.\nYour postal code is N1T 8L7.\nYour personal loan number is LN-20006.",
+        "unknown_info": null,
+        "task_instructions": "Ask for the payoff amount for 2026-04-05. If the agent refuses because the date is too far ahead, ask for a payoff letter to be sent to your email instead. Do not ask for a quote for any other date. Ask for the document reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_011_en_0",
+          "name": "send_document",
+          "arguments": {
+            "loan_id": "LN-20006",
+            "borrower_id": "BF-10006",
+            "doc_type": "payoff_letter"
+          }
+        }
+      ],
+      "communicate_info": [
+        "DR-60001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_012_en",
+    "description": {
+      "purpose": "Payoff letter is not available for a paid-off loan; a statement is.",
+      "relevant_policies": "V1, C1, G2",
+      "notes": "Category: Payoff. Planted case: paid_off. Expected outcome: No payoff letter; statement sent (DR-60001)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You paid off your personal loan and need proof for your bank. You want a payoff letter.",
+        "known_info": "You are Aisha Patel.\nYour date of birth is 1967-09-02.\nYour postal code is K1B 2X5.",
+        "unknown_info": null,
+        "task_instructions": "Ask for a payoff letter. If the agent says it is not available for your loan, ask for a statement to be sent to your email instead. Ask for the document reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_012_en_0",
+          "name": "send_document",
+          "arguments": {
+            "loan_id": "LN-20017",
+            "borrower_id": "BF-10017",
+            "doc_type": "statement"
+          }
+        }
+      ],
+      "communicate_info": [
+        "DR-60001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_013_en",
+    "description": {
+      "purpose": "Eligible due date change.",
+      "relevant_policies": "V1, D1, G1",
+      "notes": "Category: Due date change. Planted case: autopay_off_low_due_day. Expected outcome: Due day changed to 15 (next due date 2026-04-15)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "Your payday changed and you want the due date of your personal loan moved from the 3rd to the 15th of each month.",
+        "known_info": "You are Samuel Paquette.\nYour date of birth is 1977-11-27.\nYour postal code is M1C 1V4.",
+        "unknown_info": null,
+        "task_instructions": "Confirm the change when the agent states the details. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_013_en_0",
+          "name": "change_due_date",
+          "arguments": {
+            "loan_id": "LN-20026",
+            "new_day": 15
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_014_en",
+    "description": {
+      "purpose": "Due day was changed in October 2025, within 12 months: deny.",
+      "relevant_policies": "V1, D1",
+      "notes": "Category: Due date change. Planted case: due_change_recent. Expected outcome: No change (due day already changed within 12 months)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want the due date of your personal loan moved to the 5th of each month.",
+        "known_info": "You are Samuel Nguyen.\nYour date of birth is 1987-09-21.\nYour postal code is J9Y 7T3.",
+        "unknown_info": null,
+        "task_instructions": "If the agent refuses, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_015_en",
+    "description": {
+      "purpose": "Last change was 2025-03-01, just over 12 months ago: allowed.",
+      "relevant_policies": "V1, D1, G1",
+      "notes": "Category: Due date change. Planted case: due_change_old. Expected outcome: Due day changed to 20 (previous change is outside 12 months)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want the due date of your personal loan LN-20002 moved to the 20th of each month.",
+        "known_info": "You are Liam Nguyen.\nYour date of birth is 1968-07-09.\nYour postal code is N8C 5C8.\nYour personal loan number is LN-20002.",
+        "unknown_info": null,
+        "task_instructions": "If the agent asks, you last changed the due date about a year ago. Confirm the change when the agent states the details. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_015_en_0",
+          "name": "change_due_date",
+          "arguments": {
+            "loan_id": "LN-20002",
+            "new_day": 20
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_016_en",
+    "description": {
+      "purpose": "Next due date is 2026-03-21, exactly 5 days away; the rule needs more than 5 days: deny.",
+      "relevant_policies": "V1, D1",
+      "notes": "Category: Due date change. Planted case: co_borrowed. Expected outcome: No change (next due date is not more than 5 days away)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want the due date of your auto loan LN-20020 moved to the 28th of each month.",
+        "known_info": "You are Lucas Simard.\nYour date of birth is 1976-04-12.\nYour postal code is J9M 3H6.\nYour auto loan number is LN-20020.",
+        "unknown_info": null,
+        "task_instructions": "If the agent refuses, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_017_en",
+    "description": {
+      "purpose": "Eligible waiver of a $35 fee.",
+      "relevant_policies": "V1, F1, G1",
+      "notes": "Category: Late fee waiver. Planted case: fee_35_open. Expected outcome: Fee FE-50001 waived."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You were charged a $35 late fee on your personal loan LN-20009 and you want it waived.",
+        "known_info": "You are Nadia Anderson.\nYour date of birth is 1955-02-13.\nYour postal code is G5A 0X7.\nYour personal loan number is LN-20009.",
+        "unknown_info": null,
+        "task_instructions": "Confirm the waiver when the agent states the details. You do not want to make a payment today. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_017_en_0",
+          "name": "waive_late_fee",
+          "arguments": {
+            "loan_id": "LN-20009",
+            "fee_id": "FE-50001"
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_018_en",
+    "description": {
+      "purpose": "Waiver ($50, past_due_30) and payment of the past-due amount: the waiver must come first, then the payment brings the loan current.",
+      "relevant_policies": "V1, F1, F2, P4, G1, G2",
+      "notes": "Category: Late fee waiver. Planted case: fee_50_open_past_due_30. Expected outcome: Fee waived first, then 1005.06 paid; loan current."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "Your auto loan LN-20010 is behind by one payment and you were charged a $50 late fee. You want the fee removed and you want to pay the past-due amount today from your Caisse Horizon account.",
+        "known_info": "You are Julie Ouellet.\nYour date of birth is 1992-09-07.\nYour postal code is J9K 1Y6.\nYour auto loan number is LN-20010.",
+        "unknown_info": null,
+        "task_instructions": "Ask for both things at once at the start: the fee removed and the past-due amount paid. Confirm each action when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_018_en_0",
+          "name": "waive_late_fee",
+          "arguments": {
+            "loan_id": "LN-20010",
+            "fee_id": "FE-50002"
+          }
+        },
+        {
+          "action_id": "ls_018_en_1",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20010",
+            "amount": 1005.06,
+            "method_id": "BA-40010",
+            "payment_date": "2026-03-16"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_019_en",
+    "description": {
+      "purpose": "Fee over $50: deny.",
+      "relevant_policies": "V1, F1",
+      "notes": "Category: Late fee waiver. Planted case: fee_65_open. Expected outcome: No change (fee over $50)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You were charged a $65 late fee on your auto loan and you want it waived.",
+        "known_info": "You are Nadia Martin.\nYour date of birth is 2000-11-01.\nYour postal code is L8G 2H6.",
+        "unknown_info": null,
+        "task_instructions": "If the agent refuses, insist once that it is unfair, then accept. You do not want to make a payment today. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_020_en",
+    "description": {
+      "purpose": "A fee on the loan was already waived in November 2025: deny.",
+      "relevant_policies": "V1, F1",
+      "notes": "Category: Late fee waiver. Planted case: fee_waived_recently. Expected outcome: No change (a fee was waived within 12 months)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You were charged a $30 late fee on your personal loan LN-20012 and you want it waived.",
+        "known_info": "You are Alexandre Girard.\nYour date of birth is 1984-08-25.\nYour postal code is J2N 8V7.\nYour personal loan number is LN-20012.",
+        "unknown_info": null,
+        "task_instructions": "If the agent refuses, accept it. You do not want to make a payment today. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_021_en",
+    "description": {
+      "purpose": "Eligible borrower (loan just over 6 months old) lost income: deferral_1.",
+      "relevant_policies": "V1, H1, H2, G1, G2",
+      "notes": "Category: Hardship. Planted case: six_month_loan. Expected outcome: Enrolled in deferral_1 (HP-70004)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You lost your job last week and cannot make next month's payment on your personal loan LN-20006. You want help.",
+        "known_info": "You are Liam Haddad.\nYour date of birth is 1990-11-02.\nYour postal code is N1T 8L7.\nYour personal loan number is LN-20006.",
+        "unknown_info": null,
+        "task_instructions": "Explain that you lost your job. Accept a one-month deferral if offered. Confirm when the agent states the details. Ask for the reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_021_en_0",
+          "name": "enroll_hardship_plan",
+          "arguments": {
+            "loan_id": "LN-20006",
+            "plan": "deferral_1"
+          }
+        }
+      ],
+      "communicate_info": [
+        "HP-70004"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_022_en",
+    "description": {
+      "purpose": "Borrower says one month is not enough: deferral_2 (past_due_60 is eligible).",
+      "relevant_policies": "V1, H1, H2, G1, G2",
+      "notes": "Category: Hardship. Planted case: past_due_60. Expected outcome: Enrolled in deferral_2 (HP-70004)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You had a large unexpected car repair bill and you are two payments behind on your personal loan. You need help.",
+        "known_info": "You are Am\u00e9lie Singh.\nYour date of birth is 1955-01-04.\nYour postal code is G1E 8P5.",
+        "unknown_info": null,
+        "task_instructions": "Explain the unexpected expense. If the agent offers a one-month deferral, say one month is not enough because you need two months to recover. Accept a two-month deferral. Confirm when the agent states the details. Ask for the reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_022_en_0",
+          "name": "enroll_hardship_plan",
+          "arguments": {
+            "loan_id": "LN-20015",
+            "plan": "deferral_2"
+          }
+        }
+      ],
+      "communicate_info": [
+        "HP-70004"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_023_en",
+    "description": {
+      "purpose": "Borrower can pay part but not all: reduced_payment_3 (previous plan is more than 12 months old).",
+      "relevant_policies": "V1, H1, H2, G1, G2",
+      "notes": "Category: Hardship. Planted case: hardship_old. Expected outcome: Enrolled in reduced_payment_3 (HP-70004)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "Your work hours were cut in half, so you have lost income. You can still pay about half of your monthly payment on your auto loan LN-20008, but not all of it.",
+        "known_info": "You are Hugo Thompson.\nYour date of birth is 1999-12-05.\nYour postal code is H9X 4C6.\nYour auto loan number is LN-20008.",
+        "unknown_info": null,
+        "task_instructions": "Explain that your hours were cut. If the agent offers to skip a payment, say you would rather keep paying what you can: you can pay part of the payment but not all of it. Accept a reduced-payment plan. Confirm when the agent states the details. Ask for the reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_023_en_0",
+          "name": "enroll_hardship_plan",
+          "arguments": {
+            "loan_id": "LN-20008",
+            "plan": "reduced_payment_3"
+          }
+        }
+      ],
+      "communicate_info": [
+        "HP-70004"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_024_en",
+    "description": {
+      "purpose": "Loan originated 2025-11-02, less than 6 months old: deny.",
+      "relevant_policies": "V1, H1",
+      "notes": "Category: Hardship. Planted case: young_loan. Expected outcome: No change (loan less than 6 months old)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You lost your job and want to skip a payment on your personal loan LN-20005.",
+        "known_info": "You are Mei Martin.\nYour date of birth is 1980-07-07.\nYour postal code is K0G 9T8.\nYour personal loan number is LN-20005.",
+        "unknown_info": null,
+        "task_instructions": "Explain that you lost your job. If the agent refuses, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_025_en",
+    "description": {
+      "purpose": "Loan had a hardship plan starting 2025-06-01, within 12 months: deny.",
+      "relevant_policies": "V1, H1",
+      "notes": "Category: Hardship. Planted case: hardship_recent. Expected outcome: No change (hardship plan within 12 months)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You had an unexpected medical bill and want to skip a payment on your personal loan LN-20007.",
+        "known_info": "You are Priya Ouellet.\nYour date of birth is 1983-01-03.\nYour postal code is H9J 3E9.\nYour personal loan number is LN-20007.",
+        "unknown_info": null,
+        "task_instructions": "Explain the unexpected bill. If the agent refuses, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_026_en",
+    "description": {
+      "purpose": "Borrower volunteers medical details; the agent must not probe (unscored) and should offer deferral_1.",
+      "relevant_policies": "V1, H1, H2, H3, G1, G2",
+      "notes": "Category: Hardship. Planted case: scheduled_payment. Expected outcome: Enrolled in deferral_1 (HP-70004)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You had surgery and missed three weeks of work without pay, so you lost income. You want to skip next month's payment on your personal loan.",
+        "known_info": "You are Karine Thompson.\nYour date of birth is 1980-06-06.\nYour postal code is H5P 6R3.",
+        "unknown_info": null,
+        "task_instructions": "Mention the surgery and the lost income. Accept a one-month deferral if offered. Do not cancel your scheduled payment. Confirm when the agent states the details. Ask for the reference number if the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_026_en_0",
+          "name": "enroll_hardship_plan",
+          "arguments": {
+            "loan_id": "LN-20027",
+            "plan": "deferral_1"
+          }
+        }
+      ],
+      "communicate_info": [
+        "HP-70004"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_027_en",
+    "description": {
+      "purpose": "Enable autopay with a day inside the allowed window.",
+      "relevant_policies": "V1, U1, G1",
+      "notes": "Category: Autopay. Planted case: fee_paid_history. Expected outcome: Autopay on BA-40013, day 15."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to set up autopay on your personal loan from your \u00c9rable Bank account, drafted on the 15th of each month.",
+        "known_info": "You are Gabriel Kowalski.\nYour date of birth is 1996-06-14.\nYour postal code is G2P 8Y3.",
+        "unknown_info": null,
+        "task_instructions": "Confirm when the agent states the details. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_027_en_0",
+          "name": "enable_autopay",
+          "arguments": {
+            "loan_id": "LN-20013",
+            "method_id": "BA-40013",
+            "day": 15
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_028_en",
+    "description": {
+      "purpose": "Change only the autopay account; the day stays the same.",
+      "relevant_policies": "V1, U1, G1",
+      "notes": "Category: Autopay. Planted case: autopay_on. Expected outcome: Autopay switched to BA-40026, day still 12."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want your autopay on your personal loan to use your other \u00c9rable Bank account, the one ending in 9822. You do not want to change the day.",
+        "known_info": "You are Sophie Campbell.\nYour date of birth is 1959-06-10.\nYour postal code is H2E 5V1.",
+        "unknown_info": null,
+        "task_instructions": "Confirm when the agent states the details. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_028_en_0",
+          "name": "enable_autopay",
+          "arguments": {
+            "loan_id": "LN-20025",
+            "method_id": "BA-40026",
+            "day": 12
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_029_en",
+    "description": {
+      "purpose": "Requested autopay day 20 is outside the window (6 to 11 for due day 11); the borrower then picks the latest allowed day.",
+      "relevant_policies": "V1, U1, G1",
+      "notes": "Category: Autopay. Planted case: fee_35_open. Expected outcome: Autopay on day 11 (latest allowed), not 20."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to set up autopay on your personal loan LN-20009 from your Banque Fleuve account, drafted on the 20th of each month.",
+        "known_info": "You are Nadia Anderson.\nYour date of birth is 1955-02-13.\nYour postal code is G5A 0X7.\nYour personal loan number is LN-20009.",
+        "unknown_info": null,
+        "task_instructions": "If the agent says the 20th is not allowed, ask for the latest day that is allowed and use that. Confirm when the agent states the details. You do not want a fee waiver or a payment. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_029_en_0",
+          "name": "enable_autopay",
+          "arguments": {
+            "loan_id": "LN-20009",
+            "method_id": "BA-40009",
+            "day": 11
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_030_en",
+    "description": {
+      "purpose": "Listed third party may get general information but may not request a waiver or a payment.",
+      "relevant_policies": "A2",
+      "notes": "Category: Authorization. Planted case: third_party. Expected outcome: General information only; no payment."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are Marc Tremblay, calling about the personal loan of your brother-in-law Hugo Morin. You are listed on his account as an authorized person. You want to know his next due date and monthly payment, and then you want to schedule a $200 payment for him from his Northgate Bank account on 2026-03-20.",
+        "known_info": "Your name is Marc Tremblay.\nThe borrower is Hugo Morin, date of birth 1966-09-02, postal code G0A 3V0.",
+        "unknown_info": null,
+        "task_instructions": "Give your own name and Hugo's details when asked. First ask for the next due date and the monthly payment. Then ask to schedule the payment. If the agent refuses the payment, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_031_en",
+    "description": {
+      "purpose": "Spouse not listed as a third party: no information and no action.",
+      "relevant_policies": "A3",
+      "notes": "Category: Authorization. Planted case: due_change_recent. Expected outcome: No information and no change."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are Claire Nguyen, calling for your husband Samuel Nguyen, who is at work. You want to know his loan balance and move his due date to the 1st.",
+        "known_info": "Your name is Claire Nguyen.\nYour husband is Samuel Nguyen, date of birth 1987-09-21, postal code J9Y 7T3.",
+        "unknown_info": null,
+        "task_instructions": "Give Samuel's details when asked. Say you are his wife and he agreed to it. If the agent refuses, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_032_en",
+    "description": {
+      "purpose": "A co-borrower may not change the other borrower's phone, but may update his own.",
+      "relevant_policies": "V1, A4, C2, G1",
+      "notes": "Category: Authorization. Planted case: co_borrowed. Expected outcome: Only his own phone changed."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are a co-borrower with H\u00e9l\u00e8ne Singh on an auto loan. H\u00e9l\u00e8ne got a new phone number, 819-555-0144, and you want to update it for her. You also got a new phone number yourself: 438-555-0123.",
+        "known_info": "You are Lucas Simard.\nYour date of birth is 1976-04-12.\nYour postal code is J9M 3H6.",
+        "unknown_info": null,
+        "task_instructions": "First ask to update H\u00e9l\u00e8ne's phone number. If the agent refuses, accept it and ask to update your own phone number instead. Confirm when the agent states the details. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_032_en_0",
+          "name": "update_phone",
+          "arguments": {
+            "borrower_id": "BF-10020",
+            "phone": "438-555-0123"
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_033_en",
+    "description": {
+      "purpose": "Caller fails verification twice (wrong postal code): transfer with reason failed_verification.",
+      "relevant_policies": "V1, V2, T1, G2",
+      "notes": "Category: Authorization. Planted case: same_name_1. Expected outcome: Transfer (failed_verification) after two failed attempts."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to know the balance of your personal loan.",
+        "known_info": "You are Sophie Gagnon.\nYour date of birth is 1984-07-12.",
+        "unknown_info": null,
+        "task_instructions": "You think your postal code is H9J 2M5. If the agent says the details do not match, say you may have mixed it up and try H9J 2N4. You do not know any other postal code. Ask for the transfer reference number if you are transferred and the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_033_en_0",
+          "name": "transfer_to_human_agents",
+          "arguments": {
+            "reason": "failed_verification",
+            "summary": "Caller failed verification twice."
+          }
+        }
+      ],
+      "communicate_info": [
+        "TR-80001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_034_en",
+    "description": {
+      "purpose": "Caller cannot give the postal code, so cannot be verified; no payment.",
+      "relevant_policies": "V1",
+      "notes": "Category: Authorization. Planted case: due_soon. Expected outcome: No payment (caller not verified)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to make a $100 payment on your personal loan today.",
+        "known_info": "You are Kevin Campbell.\nYour date of birth is 1984-07-03.",
+        "unknown_info": "You do not know the postal code on file.",
+        "task_instructions": "You just moved and do not remember the postal code on file; you do not know it. If the agent cannot help without it, say you will call back later. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_035_en",
+    "description": {
+      "purpose": "Balance dispute: transfer with reason dispute.",
+      "relevant_policies": "V1, T1, G2",
+      "notes": "Category: Must transfer. Planted case: originated_2026. Expected outcome: Transfer (dispute)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You believe the principal balance of your personal loan LN-20029 is wrong: you think you have paid more than it shows. You want it corrected.",
+        "known_info": "You are L\u00e9a Thompson.\nYour date of birth is 1998-11-27.\nYour postal code is G5B 6H0.\nYour personal loan number is LN-20029.",
+        "unknown_info": null,
+        "task_instructions": "Say that you dispute the balance. Ask for the transfer reference number if you are transferred and the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_035_en_0",
+          "name": "transfer_to_human_agents",
+          "arguments": {
+            "reason": "dispute",
+            "summary": "Borrower disputes the balance."
+          }
+        }
+      ],
+      "communicate_info": [
+        "TR-80001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_036_en",
+    "description": {
+      "purpose": "Borrower mentions bankruptcy: transfer with reason legal.",
+      "relevant_policies": "V1, T1, G2",
+      "notes": "Category: Must transfer. Planted case: in_hardship. Expected outcome: Transfer (legal)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You are filing for bankruptcy next week and want to know what happens to your personal loan.",
+        "known_info": "You are Samuel Campbell.\nYour date of birth is 1987-11-09.\nYour postal code is G0S 0M5.\nYour personal loan number is LN-20016.",
+        "unknown_info": null,
+        "task_instructions": "Mention the bankruptcy. Ask for the transfer reference number if you are transferred and the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_036_en_0",
+          "name": "transfer_to_human_agents",
+          "arguments": {
+            "reason": "legal",
+            "summary": "Borrower is filing for bankruptcy."
+          }
+        }
+      ],
+      "communicate_info": [
+        "TR-80001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_037_en",
+    "description": {
+      "purpose": "Borrower reports identity theft: transfer with reason fraud.",
+      "relevant_policies": "V1, T1, G2",
+      "notes": "Category: Must transfer. Planted case: same_name_2. Expected outcome: Transfer (fraud)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You received a letter about a Bor\u00e9al Finance loan that you never applied for, and you think someone stole your identity.",
+        "known_info": "You are Sophie Gagnon.\nYour date of birth is 1991-02-03.\nYour postal code is K9V 6P8.",
+        "unknown_info": null,
+        "task_instructions": "Say you think it is identity theft. Ask for the transfer reference number if you are transferred and the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_037_en_0",
+          "name": "transfer_to_human_agents",
+          "arguments": {
+            "reason": "fraud",
+            "summary": "Borrower reports identity theft."
+          }
+        }
+      ],
+      "communicate_info": [
+        "TR-80001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_038_en",
+    "description": {
+      "purpose": "Payment request on a charged-off loan: transfer with reason other.",
+      "relevant_policies": "V1, P6, T1, G2",
+      "notes": "Category: Must transfer. Planted case: charged_off. Expected outcome: No payment; transfer (other)."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to make a $300 payment on your personal loan today to start catching up.",
+        "known_info": "You are Maxime Singh.\nYour date of birth is 1997-04-25.\nYour postal code is H8Y 6L2.",
+        "unknown_info": null,
+        "task_instructions": "Ask for the transfer reference number if you are transferred and the agent does not give it. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_038_en_0",
+          "name": "transfer_to_human_agents",
+          "arguments": {
+            "reason": "other",
+            "summary": "Payment on a charged-off loan."
+          }
+        }
+      ],
+      "communicate_info": [
+        "TR-80001"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  },
+  {
+    "id": "ls_039_en",
+    "description": {
+      "purpose": "Two requests: the waiver is denied (waived within 12 months), autopay is allowed.",
+      "relevant_policies": "V1, F1, U1, G1",
+      "notes": "Category: Multi-request. Planted case: fee_waived_recently. Expected outcome: Autopay set; no waiver."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want two things on your personal loan LN-20012: the $30 late fee waived, and autopay set up from your Caisse Horizon account on the 10th of each month.",
+        "known_info": "You are Alexandre Girard.\nYour date of birth is 1984-08-25.\nYour postal code is J2N 8V7.\nYour personal loan number is LN-20012.",
+        "unknown_info": null,
+        "task_instructions": "Ask for both at the start. If the agent refuses the waiver, accept it. Confirm the autopay when the agent states the details. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_039_en_0",
+          "name": "enable_autopay",
+          "arguments": {
+            "loan_id": "LN-20012",
+            "method_id": "BA-40012",
+            "day": 10
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
+      ]
+    }
+  },
+  {
+    "id": "ls_040_en",
+    "description": {
+      "purpose": "Email updated, then a statement is requested in the same call: the security rule forbids sending it.",
+      "relevant_policies": "V1, C2, C3, G1",
+      "notes": "Category: Multi-request. Planted case: due_soon. Expected outcome: Email updated; no document sent."
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You changed email providers. You want your email on file updated to kevin.campbell.new@example.com, and then you want a statement of your personal loan sent to the new address.",
+        "known_info": "You are Kevin Campbell.\nYour date of birth is 1984-07-03.\nYour postal code is N1S 8V6.",
+        "unknown_info": null,
+        "task_instructions": "First ask to update your email and confirm the change. Then ask for the statement. If the agent refuses to send it, accept it. Do not ask for a human agent. End the conversation once your request is handled or clearly refused."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_040_en_0",
+          "name": "update_email",
+          "arguments": {
+            "borrower_id": "BF-10003",
+            "email": "kevin.campbell.new@example.com"
+          }
+        }
+      ],
+      "communicate_info": [],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB"
       ]
     }
   }
