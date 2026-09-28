@@ -142,6 +142,15 @@ class Transfer(BaseModel):
     reason: TransferReason = Field(description="Reason for the transfer")
 
 
+class PayoffQuote(BaseModel):
+    loan_id: str = Field(description="Loan the quote is for")
+    payoff_date: str = Field(description="Date the quote is valid for")
+    principal: float = Field(description="Remaining principal")
+    interest: float = Field(description="Interest accrued up to the payoff date")
+    fees: float = Field(description="Open late fees")
+    total: float = Field(description="Amount needed to pay off the loan")
+
+
 class LoanServicingDB(DB):
     """Database of borrowers, loans, payments, document requests, and transfers."""
 

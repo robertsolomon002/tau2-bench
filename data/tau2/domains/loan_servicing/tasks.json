@@ -1,0 +1,43 @@
+[
+  {
+    "id": "ls_000_smoke",
+    "description": {
+      "purpose": "Placeholder smoke task (Stage 1.3): verified borrower makes a one-time payment today. Replaced by the real task set in Stage 2.1.",
+      "relevant_policies": "Verification; Confirmation; Payments; Reference numbers",
+      "notes": null
+    },
+    "user_scenario": {
+      "persona": null,
+      "instructions": {
+        "domain": "loan_servicing",
+        "reason_for_call": "You want to make a one-time payment of $150 on your personal loan today, from your bank account at Banque Fleuve.",
+        "known_info": "You are \u00c9milie Bouchard.\nYour date of birth is 2000-09-22.\nYour postal code is J2V 3E7.\nYour email is emilie.bouchard13@example.com.",
+        "unknown_info": "You do not know your loan id or your borrower id.",
+        "task_instructions": "Only give your details when the agent asks for them. Confirm the payment when the agent states the details. Ask for the payment reference number if the agent does not give it. End the conversation once the payment is done."
+      }
+    },
+    "initial_state": null,
+    "evaluation_criteria": {
+      "actions": [
+        {
+          "action_id": "ls_000_smoke_0",
+          "name": "make_payment",
+          "arguments": {
+            "loan_id": "LN-20004",
+            "amount": 150.0,
+            "method_id": "BA-40004",
+            "payment_date": "2026-03-16"
+          }
+        }
+      ],
+      "communicate_info": [
+        "PM-31887"
+      ],
+      "nl_assertions": null,
+      "reward_basis": [
+        "DB",
+        "COMMUNICATE"
+      ]
+    }
+  }
+]
