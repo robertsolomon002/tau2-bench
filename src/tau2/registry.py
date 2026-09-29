@@ -29,7 +29,10 @@ from tau2.domains.banking_knowledge.environment import (
     get_tasks as knowledge_domain_get_tasks,
 )
 from tau2.domains.loan_servicing.environment import (
-    get_environment as loan_servicing_domain_get_environment,
+    get_environment_en_policy as loan_servicing_domain_get_environment_en_policy,
+)
+from tau2.domains.loan_servicing.environment import (
+    get_environment_fr_policy as loan_servicing_domain_get_environment_fr_policy,
 )
 from tau2.domains.loan_servicing.environment import (
     get_tasks as loan_servicing_domain_get_tasks,
@@ -356,10 +359,20 @@ try:
     registry.register_domain(knowledge_domain_get_environment, "banking_knowledge")
     registry.register_tasks(knowledge_domain_get_tasks, "banking_knowledge")
 
-    registry.register_domain(loan_servicing_domain_get_environment, "loan_servicing")
+    registry.register_domain(
+        loan_servicing_domain_get_environment_en_policy, "loan_servicing"
+    )
+    registry.register_domain(
+        loan_servicing_domain_get_environment_fr_policy, "loan_servicing_fr"
+    )
     registry.register_tasks(
         loan_servicing_domain_get_tasks,
         "loan_servicing",
+        get_task_splits=loan_servicing_domain_get_tasks_split,
+    )
+    registry.register_tasks(
+        loan_servicing_domain_get_tasks,
+        "loan_servicing_fr",
         get_task_splits=loan_servicing_domain_get_tasks_split,
     )
 
