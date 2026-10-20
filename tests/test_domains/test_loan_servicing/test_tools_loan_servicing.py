@@ -410,6 +410,21 @@ def test_make_payment_errors(environment: Environment, arguments: dict):
     assert len(environment.tools.db.payments) == 2
 
 
+@pytest.mark.parametrize("status", ["paid_off", "charged_off"])
+def test_make_payment_rejects_closed_loan(environment: Environment, status: str):
+    loan(environment, "LN-20001").status = status
+    _, error = call(
+        environment,
+        "make_payment",
+        loan_id="LN-20001",
+        amount=100,
+        method_id="BA-40001",
+        payment_date="2026-03-16",
+    )
+    assert error
+    assert len(environment.tools.db.payments) == 2
+
+
 def test_cancel_scheduled_payment(environment: Environment):
     payment, error = call(
         environment, "cancel_scheduled_payment", payment_id="PM-30002"

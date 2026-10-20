@@ -123,7 +123,11 @@ tasks for three of the models:
 These runs used an earlier wording of `ls_041_fr` that made the French
 customer raise the fee waiver only after the payment, which caused most of
 that task's C2 and C3 failures; the text is now fixed (the customer raises
-both requests in the first message, as in English) and has not been re-run. Full results,
+both requests in the first message, as in English) and has not been re-run. They also used
+a `make_payment` that accepted payments on `charged_off` loans, against the
+policy; it now rejects them as it does `paid_off` loans. This affected one
+conversation (Gemini Flash-Lite, C3, `ls_038_fr`), which posted such a payment
+and failed. Full results,
 trajectories and the analysis:
 [tau2-loan-servicing-study](https://github.com/robertsolomon002/tau2-loan-servicing-study).
 

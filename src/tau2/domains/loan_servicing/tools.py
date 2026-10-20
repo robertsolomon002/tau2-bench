@@ -310,11 +310,11 @@ class LoanServicingTools(ToolKitBase):
             ValueError: If the loan or method is not found, the amount is not
                 positive, has more than two decimals, or exceeds the payoff
                 amount, the date is invalid or in the past, or the loan is
-                paid off.
+                closed.
         """
         loan = self._get_loan(loan_id)
-        if loan.status == "paid_off":
-            raise ValueError(f"Loan {loan_id} is paid off")
+        if loan.status in CLOSED_STATUSES:
+            raise ValueError(f"Loan {loan_id} is {loan.status}")
         if method_id not in self._loan_method_ids(loan):
             raise ValueError(f"Payment method {method_id} not found for this loan")
         amount = float(amount)
